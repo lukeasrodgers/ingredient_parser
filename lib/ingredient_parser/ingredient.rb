@@ -6,6 +6,10 @@ module IngredientParser
       @amount = normalize(amount)
     end
 
+    def empty?
+      name.nil? && amount.nil?
+    end
+
     private
 
     def normalize(value)

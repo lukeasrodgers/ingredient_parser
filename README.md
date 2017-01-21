@@ -6,6 +6,8 @@ Basic recipe ingredient parser using [parslet](https://github.com/kschiess/parsl
 
 It is not, and will never be, perfect. If it can't separate out a name from an amount, it will fallback to just returning the whole string as the name.
 
+If passed an empty string as input, it will return an empty ingredient object, with `nil` values for `name` and `amount`.
+
 ## Installation
 
 Add this line to your application's Gemfile:

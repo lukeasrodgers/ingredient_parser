@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'spec_helper'
 
 describe IngredientParser do
@@ -48,6 +49,18 @@ describe IngredientParser do
       i = IngredientParser.parse("4 T chili powder")
       expect(i.name).to eql('chili powder')
       expect(i.amount).to eql('4 T')
+    end
+
+    it 'parses everything into name if it cannot parse amount' do
+      i = IngredientParser.parse("Ø chortles of flimflam")
+      expect(i.name).to eql('Ø chortles of flimflam')
+      expect(i.amount).to be_nil
+    end
+
+    it 'returns a null object if input is empty' do
+      i = IngredientParser.parse("")
+      expect(i.name).to be_nil
+      expect(i.amount).to be_nil
     end
   end
 end
