@@ -1,8 +1,8 @@
 # IngredientParser
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/ingredient_parser`. To experiment with that code, run `bin/console` for an interactive prompt.
+Basic recipe ingredient parser using [parslet](https://github.com/kschiess/parslet).
 
-TODO: Delete this and the text above, and describe your gem
+It is not, and will never be, perfect. If it can't separate out a name from an amount, it will fallback to just returning the whole string as the name.
 
 ## Installation
 
@@ -22,7 +22,15 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+2.1.2 :002 > ingr = IngredientParser.parse('10 tablespoons of bananas')
+ => #<IngredientParser::Ingredient:0x007f92652c2938 @name="bananas", @amount="10 tablespoons">
+2.1.2 :003 > ingr.name
+ => "bananas"
+2.1.2 :004 > ingr.amount
+ => "10 tablespoons"
+2.1.2 :005 >
+```
 
 ## Development
 
@@ -32,7 +40,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/ingredient_parser.
+Bug reports and pull requests are welcome on GitHub at https://github.com/lukeasrodgers/ingredient_parser.
 
 
 ## License
