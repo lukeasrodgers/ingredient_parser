@@ -17,8 +17,10 @@ end
 module IngredientParser
   extend self
 
+  @parser = Parser.new
+
   def self.parse(str)
-    parsed = Parser.new.parse(str)
-    Ingredient.new(parsed[:name], parsed[:number])
+    parsed = @parser.parse(str)
+    Ingredient.new(parsed[:name], parsed[:amount])
   end
 end

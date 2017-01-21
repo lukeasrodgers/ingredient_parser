@@ -9,12 +9,12 @@ module IngredientParser
 
     rule(:half) { match('½') >> space? }
 
-    rule(:number) { integer | half }
-    rule(:number?) { number.maybe }
+    rule(:quantity) { integer | half }
+    rule(:quantity?) { quantity.maybe }
 
     rule(:weighted) { match('[0-9]').repeat(1) >> weighted_separator >> weight }
 
-    rule(:hypen) { str('-') }
+    rule(:hyphen) { str('-') }
     rule(:space_separator) { match('\s') }
     rule(:weighted_separator) { space_separator | hyphen }
     rule(:weight) { pound | ounce | gram | kilogram }
@@ -23,9 +23,37 @@ module IngredientParser
     rule(:gram) { str('gram') | str('g') | str('g.') }
     rule(:kilogram) { str('kilogram') | str('kg') | str('kg.') | str('kilo') | str('k') }
 
+    rule(:litre) { str('litre') | str('liter') }
+    rule(:pint) { str('pint') }
+    rule(:cup) { str('cup') }
+    rule(:tablespoon) { str('tablespoon') | str('T') >> space | str('tbsp') >> str('.').maybe }
+    rule(:teaspoon) { str('teaspoon') | str('t') >> space | str('tsp') >> str('.').maybe }
+
+    rule(:volume) { litre | pint | cup | tablespoon | teaspoon}
+
+    rule(:measurement) { (weight >> str('s').maybe) | (volume >> str('s').maybe) }
+
+    rule(:large) { str('large') }
+    rule(:small) { str('small') }
+    rule(:medium) { str('medium') }
+    rule(:adjective) { large | small | medium }
+
+    rule(:quantified) { weighted | measurement | adjective }
+    rule(:quantified?) { quantified.maybe }
+
+    rule(:package) { str('package') >> str('s').maybe }
+    rule(:container) { str('container') >> str('s').maybe }
+    rule(:bottle) { str('bottle') >> str('s').maybe }
+    rule(:tin) { str('tin') >> str('s').maybe }
+    rule(:abstract_container) { package | bottle | tin | container }
+    rule(:abstract_container?) { space? >> abstract_container.maybe }
+
+    rule(:amount) { quantity? >> quantified? >> abstract_container? }
+    rule(:amount?) { amount.maybe }
+
     rule(:name) { any.repeat(1) }
 
-    rule(:expression) { number?.as(:number) >> name.as(:name) }
+    rule(:expression) { amount?.as(:amount) >> str('of').maybe >> name.as(:name) }
     root(:expression)
   end
 end
