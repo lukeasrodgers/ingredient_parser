@@ -1,5 +1,7 @@
 # IngredientParser
 
+[![Build Status](https://travis-ci.org/lukeasrodgers/ingredient_parser.svg?branch=master)](https://travis-ci.org/lukeasrodgers/ingredient_parser)
+
 Basic recipe ingredient parser using [parslet](https://github.com/kschiess/parslet).
 
 It is not, and will never be, perfect. If it can't separate out a name from an amount, it will fallback to just returning the whole string as the name.
