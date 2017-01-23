@@ -24,20 +24,20 @@ module IngredientParser
     rule(:space_separator) { match('\s') }
     rule(:weighted_separator) { space_separator | hyphen }
     rule(:weight) { pound | ounce | gram | kilogram }
-    rule(:pound) { str('pound') | str('lb') | str('lb.') }
-    rule(:ounce) { str('ounce') | str('oz') | str('oz.') }
-    rule(:gram) { str('gram') | str('g') | str('g.') }
+    rule(:pound) { str('pound') >> str('s').maybe | str('lb') >> str('s').maybe | str('lb.') }
+    rule(:ounce) { str('ounce') >> str('s').maybe | str('oz') | str('oz.') }
+    rule(:gram) { str('gram') >> str('s').maybe | str('g') >> space | str('g.') }
     rule(:kilogram) { str('kilogram') | str('kg') | str('kg.') | str('kilo') | str('k') }
 
-    rule(:litre) { str('litre') | str('liter') }
-    rule(:pint) { str('pint') }
-    rule(:cup) { str('cup') }
-    rule(:tablespoon) { str('tablespoon') | str('T') >> space | str('tbsp') >> str('.').maybe }
-    rule(:teaspoon) { str('teaspoon') | str('t') >> space | str('tsp') >> str('.').maybe }
+    rule(:litre) { (str('litre') | str('liter')) >> str('s').maybe }
+    rule(:pint) { str('pint') >> str('s').maybe }
+    rule(:cup) { str('cup') >> str('s').maybe }
+    rule(:tablespoon) { str('tablespoon') >> str('s').maybe | str('T') >> space | str('tbsp') >> str('.').maybe }
+    rule(:teaspoon) { str('teaspoon') >> str('s').maybe | str('t') >> space | str('tsp') >> str('.').maybe }
 
     rule(:volume) { litre | pint | cup | tablespoon | teaspoon }
 
-    rule(:measurement) { (weight >> str('s').maybe) | (volume >> str('s').maybe) }
+    rule(:measurement) { weight | volume }
 
     rule(:large) { str('large') }
     rule(:small) { str('small') }
