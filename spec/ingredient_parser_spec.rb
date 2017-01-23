@@ -51,6 +51,24 @@ describe IngredientParser do
       expect(i.amount).to eql('4 T')
     end
 
+    it 'parses "2 28-ounce cans of whole, peeled tomatoes"' do
+      i = IngredientParser.parse("2 28-ounce cans of whole, peeled tomatoes")
+      expect(i.name).to eql('whole, peeled tomatoes')
+      expect(i.amount).to eql('2 28-ounce cans')
+    end
+
+    it 'parses "4 slices sharp cheddar"' do
+      i = IngredientParser.parse("4 slices sharp cheddar")
+      expect(i.name).to eql('sharp cheddar')
+      expect(i.amount).to eql('4 slices')
+    end
+
+    it 'parses "1 small piece of dark chocolate"' do
+      i = IngredientParser.parse("1 small piece of dark chocolate")
+      expect(i.name).to eql('dark chocolate')
+      expect(i.amount).to eql('1 small piece')
+    end
+
     it 'parses everything into name if it cannot parse amount' do
       i = IngredientParser.parse("Ø chortles of flimflam")
       expect(i.name).to eql('Ø chortles of flimflam')

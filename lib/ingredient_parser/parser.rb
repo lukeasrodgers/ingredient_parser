@@ -45,7 +45,10 @@ module IngredientParser
     rule(:container) { str('container') >> str('s').maybe }
     rule(:bottle) { str('bottle') >> str('s').maybe }
     rule(:tin) { str('tin') >> str('s').maybe }
-    rule(:abstract_container) { package | bottle | tin | container }
+    rule(:can) { str('can') >> str('s').maybe }
+    rule(:slice) { str('slice') >> str('s').maybe }
+    rule(:piece) { str('piece') >> str('s').maybe }
+    rule(:abstract_container) { package | bottle | tin | container | can | slice | piece }
     rule(:abstract_container?) { space? >> abstract_container.maybe }
 
     rule(:amount) { quantity? >> quantified? >> abstract_container? }
@@ -53,7 +56,7 @@ module IngredientParser
 
     rule(:name) { any.repeat(1) }
 
-    rule(:expression) { amount?.as(:amount) >> str('of').maybe >> name.as(:name) }
+    rule(:expression) { amount?.as(:amount) >> (space >> str('of') >> space).maybe >> name.as(:name) }
     root(:expression)
   end
 end
