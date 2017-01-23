@@ -69,6 +69,30 @@ describe IngredientParser do
       expect(i.amount).to eql('1 small piece')
     end
 
+    it 'parses "1 1/2 tablespoons ground or crushed fresh ginger root"' do
+      i = IngredientParser.parse("1 1/2 tablespoons ground or crushed fresh ginger root")
+      expect(i.name).to eql('ground or crushed fresh ginger root')
+      expect(i.amount).to eql('1 1/2 tablespoons')
+    end
+
+    it 'parses "1 pint of beer"' do
+      i = IngredientParser.parse("1 pint of beer")
+      expect(i.name).to eql('beer')
+      expect(i.amount).to eql('1 pint')
+    end
+
+    it 'parses "2.5 cups of milk"' do
+      i = IngredientParser.parse("2.5 cups of milk")
+      expect(i.name).to eql('milk')
+      expect(i.amount).to eql('2.5 cups')
+    end
+
+    it 'parses "1 ounce of stuff"' do
+      i = IngredientParser.parse("10 ounces of stuff")
+      expect(i.name).to eql('stuff')
+      expect(i.amount).to eql('10 ounces')
+    end
+
     it 'parses everything into name if it cannot parse amount' do
       i = IngredientParser.parse("Ø chortles of flimflam")
       expect(i.name).to eql('Ø chortles of flimflam')
