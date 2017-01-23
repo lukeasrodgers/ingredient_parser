@@ -20,8 +20,8 @@ module IngredientParser
   @parser = Parser.new
 
   def self.parse(str)
-    return Ingredient.new(nil, nil) if str.empty?
+    return Ingredient.new(nil, nil, nil) if str.empty?
     parsed = @parser.parse(str)
-    Ingredient.new(parsed[:name], parsed[:amount])
+    Ingredient.new(parsed[:name], parsed[:amount], !parsed[:optional].nil?)
   end
 end

@@ -60,9 +60,12 @@ module IngredientParser
     rule(:amount) { quantity? >> quantified? >> abstract_container? }
     rule(:amount?) { amount.maybe }
 
-    rule(:name) { any.repeat(1) }
+    rule(:optional) { str('(optional)') >> space? }
+    rule(:optional?) { optional.maybe }
 
-    rule(:expression) { amount?.as(:amount) >> (space >> str('of') >> space).maybe >> name.as(:name) }
+    rule(:name) { (str('(optional)').absent? >> any).repeat }
+
+    rule(:expression) { amount?.as(:amount) >> (space >> str('of') >> space).maybe >> name.as(:name) >> space? >> optional?.as(:optional) }
     root(:expression)
   end
 end

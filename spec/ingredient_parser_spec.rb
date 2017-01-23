@@ -99,6 +99,13 @@ describe IngredientParser do
       expect(i.amount).to eql('3')
     end
 
+    it 'parses "4 tsp. salt (optional)"' do
+      i = IngredientParser.parse("4 tsp. salt (optional)")
+      expect(i.name).to eql('salt')
+      expect(i.amount).to eql('4 tsp.')
+      expect(i.optional?).to be true
+    end
+
     it 'parses everything into name if it cannot parse amount' do
       i = IngredientParser.parse("Ø chortles of flimflam")
       expect(i.name).to eql('Ø chortles of flimflam')

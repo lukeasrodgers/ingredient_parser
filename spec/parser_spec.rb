@@ -57,5 +57,11 @@ describe IngredientParser::Parser do
       end
     end
 
+    describe 'name' do
+      it "should not consume 'potatoes (optional)'" do
+        expect(@parser.name).not_to parse('potatoes (optional)')
+      end
+    end
+
   end
 end
