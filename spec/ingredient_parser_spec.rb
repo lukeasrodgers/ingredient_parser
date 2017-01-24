@@ -75,6 +75,18 @@ describe IngredientParser do
       expect(i.amount).to eql('1 1/2 tablespoons')
     end
 
+    it 'parses "1/4 teaspoon turmeric"' do
+      i = IngredientParser.parse("1/4 teaspoon turmeric")
+      expect(i.name).to eql('turmeric')
+      expect(i.amount).to eql('1/4 teaspoon')
+    end
+
+    it 'parses "3/8 tbsp. baking soda"' do
+      i = IngredientParser.parse("3/8 tbsp. baking soda")
+      expect(i.name).to eql('baking soda')
+      expect(i.amount).to eql('3/8 tbsp.')
+    end
+
     it 'parses "1 pint of beer"' do
       i = IngredientParser.parse("1 pint of beer")
       expect(i.name).to eql('beer')

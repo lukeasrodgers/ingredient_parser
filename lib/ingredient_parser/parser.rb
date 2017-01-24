@@ -16,7 +16,7 @@ module IngredientParser
 
     rule(:half) { match('½') >> space? }
 
-    rule(:quantity) { integer_with_fraction | integer_with_decimal | integer | half }
+    rule(:quantity) { fraction >> space | integer_with_fraction | integer_with_decimal | integer | half }
     rule(:quantity?) { quantity.maybe }
 
     rule(:weighted) { match('[0-9]').repeat(1) >> weighted_separator >> weight }
