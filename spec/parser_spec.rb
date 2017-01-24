@@ -37,6 +37,10 @@ describe IngredientParser::Parser do
       it "should consume '3 bottles'" do
         expect(@parser.amount).to parse('3 bottles')
       end
+
+      it "should consume '2.5 cups'" do
+        expect(@parser.amount).to parse('2.5 cups')
+      end
     end
     
     describe 'abstract_container' do
@@ -50,6 +54,12 @@ describe IngredientParser::Parser do
 
       it "should consume 'cans'" do
         expect(@parser.amount).to parse('cans')
+      end
+    end
+
+    describe 'name' do
+      it "should not consume 'potatoes (optional)'" do
+        expect(@parser.name).not_to parse('potatoes (optional)')
       end
     end
 

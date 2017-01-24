@@ -2,36 +2,42 @@
 
 module IngredientParser
   class Parser < Parslet::Parser
+    rule(:hyphen) { str('-') }
+    rule(:period) { str('.') }
+
     rule(:integer) { match('[0-9]').repeat(1) >> space? }
+    rule(:fraction) { half | match('[1-4]') >> str('/') >> match('[2-8]') }
+    rule(:fraction_separator) { space | period | hyphen }
+    rule(:integer_with_fraction) { match('[0-9]').repeat(1) >> fraction_separator >> fraction >> space }
+    rule(:integer_with_decimal) { match('[0-9]') >> str('.') >> match('[0-9]') >> space }
 
     rule(:space) { match('\s').repeat(1) }
     rule(:space?) { space.maybe }
 
     rule(:half) { match('½') >> space? }
 
-    rule(:quantity) { integer | half }
+    rule(:quantity) { integer_with_fraction | integer_with_decimal | integer | half }
     rule(:quantity?) { quantity.maybe }
 
     rule(:weighted) { match('[0-9]').repeat(1) >> weighted_separator >> weight }
 
-    rule(:hyphen) { str('-') }
     rule(:space_separator) { match('\s') }
     rule(:weighted_separator) { space_separator | hyphen }
     rule(:weight) { pound | ounce | gram | kilogram }
-    rule(:pound) { str('pound') | str('lb') | str('lb.') }
-    rule(:ounce) { str('ounce') | str('oz') | str('oz.') }
-    rule(:gram) { str('gram') | str('g') | str('g.') }
+    rule(:pound) { str('pound') >> str('s').maybe | str('lb') >> str('s').maybe | str('lb.') }
+    rule(:ounce) { str('ounce') >> str('s').maybe | str('oz') | str('oz.') }
+    rule(:gram) { str('gram') >> str('s').maybe | str('g') >> space | str('g.') }
     rule(:kilogram) { str('kilogram') | str('kg') | str('kg.') | str('kilo') | str('k') }
 
-    rule(:litre) { str('litre') | str('liter') }
-    rule(:pint) { str('pint') }
-    rule(:cup) { str('cup') }
-    rule(:tablespoon) { str('tablespoon') | str('T') >> space | str('tbsp') >> str('.').maybe }
-    rule(:teaspoon) { str('teaspoon') | str('t') >> space | str('tsp') >> str('.').maybe }
+    rule(:litre) { (str('litre') | str('liter')) >> str('s').maybe }
+    rule(:pint) { str('pint') >> str('s').maybe }
+    rule(:cup) { str('cup') >> str('s').maybe }
+    rule(:tablespoon) { str('tablespoon') >> str('s').maybe | str('T') >> space | str('tbsp') >> str('.').maybe }
+    rule(:teaspoon) { str('teaspoon') >> str('s').maybe | str('t') >> space | str('tsp') >> str('.').maybe }
 
-    rule(:volume) { litre | pint | cup | tablespoon | teaspoon}
+    rule(:volume) { litre | pint | cup | tablespoon | teaspoon }
 
-    rule(:measurement) { (weight >> str('s').maybe) | (volume >> str('s').maybe) }
+    rule(:measurement) { weight | volume }
 
     rule(:large) { str('large') }
     rule(:small) { str('small') }
@@ -49,14 +55,17 @@ module IngredientParser
     rule(:slice) { str('slice') >> str('s').maybe }
     rule(:piece) { str('piece') >> str('s').maybe }
     rule(:abstract_container) { package | bottle | tin | container | can | slice | piece }
-    rule(:abstract_container?) { space? >> abstract_container.maybe }
+    rule(:abstract_container?) { (space.maybe >> abstract_container).maybe }
 
     rule(:amount) { quantity? >> quantified? >> abstract_container? }
     rule(:amount?) { amount.maybe }
 
-    rule(:name) { any.repeat(1) }
+    rule(:optional) { str('(optional)') >> space? }
+    rule(:optional?) { optional.maybe }
 
-    rule(:expression) { amount?.as(:amount) >> (space >> str('of') >> space).maybe >> name.as(:name) }
+    rule(:name) { (str('(optional)').absent? >> any).repeat }
+
+    rule(:expression) { amount?.as(:amount) >> (space >> str('of') >> space).maybe >> name.as(:name) >> space? >> optional?.as(:optional) }
     root(:expression)
   end
 end
