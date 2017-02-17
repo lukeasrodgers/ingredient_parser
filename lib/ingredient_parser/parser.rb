@@ -6,7 +6,8 @@ module IngredientParser
     rule(:period) { str('.') }
 
     rule(:integer) { match('[0-9]').repeat(1) >> space? }
-    rule(:fraction) { half | match('[1-4]') >> str('/') >> match('[2-8]') }
+    rule(:integer?) { integer.maybe }
+    rule(:fraction) { unicode_fraction | match('[1-4]') >> str('/') >> match('[2-8]') }
     rule(:fraction_separator) { space | period | hyphen }
     rule(:integer_with_fraction) { match('[0-9]').repeat(1) >> fraction_separator >> fraction >> space }
     rule(:integer_with_decimal) { match('[0-9]') >> str('.') >> match('[0-9]') >> space }
@@ -14,7 +15,10 @@ module IngredientParser
     rule(:space) { match('\s').repeat(1) }
     rule(:space?) { space.maybe }
 
-    rule(:half) { match('½') >> space? }
+    rule(:half) { match('½') }
+    rule(:three_quarters) { match('¾') }
+    rule(:quarter) { match('¼') }
+    rule(:unicode_fraction) { integer? >> half | three_quarters | quarter }
 
     rule(:quantity) { fraction >> space | integer_with_fraction | integer_with_decimal | integer | half }
     rule(:quantity?) { quantity.maybe }

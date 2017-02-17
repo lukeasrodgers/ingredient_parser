@@ -63,5 +63,11 @@ describe IngredientParser::Parser do
       end
     end
 
+    describe 'unicode_fraction' do
+      it "should consume '¾'" do
+        expect(@parser.name).to parse('¾')
+      end
+    end
+
   end
 end

@@ -45,6 +45,12 @@ describe IngredientParser do
       expect(i.amount).to eql('½ tsp.')
     end
 
+    it 'parses "¾ cup heavy cream"' do
+      i = IngredientParser.parse("¾ cup heavy cream")
+      expect(i.name).to eql('heavy cream')
+      expect(i.amount).to eql('¾ cup')
+    end
+
     it 'parses "4 T chili powder"' do
       i = IngredientParser.parse("4 T chili powder")
       expect(i.name).to eql('chili powder')
@@ -73,6 +79,12 @@ describe IngredientParser do
       i = IngredientParser.parse("1 1/2 tablespoons ground or crushed fresh ginger root")
       expect(i.name).to eql('ground or crushed fresh ginger root')
       expect(i.amount).to eql('1 1/2 tablespoons')
+    end
+
+    it 'parses "1 ½ pounds winter squash of your choice"' do
+      i = IngredientParser.parse("1 ½ pounds winter squash of your choice")
+      expect(i.name).to eql('winter squash of your choice')
+      expect(i.amount).to eql('1 ½ pounds')
     end
 
     it 'parses "1/4 teaspoon turmeric"' do
