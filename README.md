@@ -1,6 +1,6 @@
 # IngredientParser
 
-[![Build Status](https://travis-ci.org/lukeasrodgers/ingredient_parser.svg?branch=master)](https://travis-ci.org/lukeasrodgers/ingredient_parser)
+[![Build Status](https://github.com/lukeasrodgers/ingredient_parser/actions/workflows/specs.yml/badge.svg)](https://github.com/lukeasrodgers/ingredient_parser/)
 
 Basic recipe ingredient parser using [parslet](https://github.com/kschiess/parslet).
 
